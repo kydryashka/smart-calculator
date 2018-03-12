@@ -1,27 +1,76 @@
 class SmartCalculator {
   constructor(initialValue) {
-    // your implementation
+      this.result = "" + initialValue;
+      this.degrees = [];
+      this.preOperations=["+","-"];
+      this.baseOfDegree = initialValue;
+      this.degree=new Promise((resolve,reject)=>{
+        resolve(this.degrees);
+      });
   }
 
   add(number) {
-    // your implementation
+    if (this.degrees.length) {
+      this.powFunction();
+    }
+
+      this.result += `+${number}`;
+      this.baseOfDegree = number;
+      this.preOperations=["+","-"];
+      return this;
   }
-  
+
   subtract(number) {
-    // your implementation
+    if (this.degrees.length) {
+      this.powFunction();
+    }
+      this.result += `-${number}`;
+      this.baseOfDegree = number;
+      this.preOperations=["-","+"];
+      return this;
   }
 
   multiply(number) {
-    // your implementation
+    if (this.degrees.length) {
+      this.powFunction();
+    }
+      this.result += `*${number}`;
+      this.baseOfDegree = number;
+      this.preOperations=["*","/"];
+      return this;
   }
 
   devide(number) {
-    // your implementation
+    if (this.degrees.length) {
+      this.powFunction();
+    }
+      this.result += `/${number}`;
+      this.baseOfDegree = number;
+      this.preOperations=["/","*"];
+      return this;
   }
 
   pow(number) {
-    // your implementation
+      this.degrees.push(number);
+      return this;
+  }
+
+  powFunction() {
+    while (this.degrees.length != 1) {
+
+        this.degrees[this.degrees.length - 2] = Math.pow(this.degrees[this.degrees.length - 2], this.degrees.pop())
+
+    }
+    this.result += `${this.preOperations[1]} ${this.baseOfDegree} ${this.preOperations[0]}  Math.pow(${this.baseOfDegree}, ${this.degrees.pop()})`;
+  }
+
+  toString() {
+    if (this.degrees.length) {
+      this.powFunction();
+    }
+      return eval(this.result);
   }
 }
+
 
 module.exports = SmartCalculator;
